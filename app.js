@@ -8,34 +8,43 @@ let currentDrink = null
 
 button.addEventListener("click", function () {
 
-    const name = input.value
+const name = input.value
 
-    fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
-    .then(res => res.json())
-    .then(data => {
+fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`)
 
-        const drink = data.drinks[0]
+.then(res => res.json())
 
-        currentDrink = drink
+.then(data => {
 
-        title.textContent = drink.strDrink + " (" + drink.strCategory + ")"
+const drink = data.drinks[0]
 
-        image.src = drink.strDrinkThumb
+currentDrink = drink
 
-    })
+title.textContent = drink.strDrink + " (" + drink.strCategory + ")"
+
+image.src = drink.strDrinkThumb
+
+})
 
 })
 
 save.addEventListener("click", function(){
 
-    if(!currentDrink) return
+if(!currentDrink) return
 
-    let favs = JSON.parse(localStorage.getItem("favs")) || []
+let favs = JSON.parse(localStorage.getItem("favs")) || []
 
-    favs.push(currentDrink)
+const exists = favs.find(d => d.idDrink === currentDrink.idDrink)
 
-    localStorage.setItem("favs", JSON.stringify(favs))
+if(exists){
+alert("Already in favorites!")
+return
+}
 
-    alert("Saved to favorites!")
+favs.push(currentDrink)
+
+localStorage.setItem("favs", JSON.stringify(favs))
+
+alert("Saved to favorites!")
 
 })
